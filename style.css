@@ -1,0 +1,24 @@
+:root { 
+    --board-witdth: 250px;
+}
+
+/* utility */
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn {
+    width: calc(var(--board-witdth)/3);
+    height: calc(var(--board-witdth)/3);
+}
+.container {
+    text-align: center;
+}
+
+/* Board  */
+
+#board {
+    width: var(--board-witdth);
+}
+
