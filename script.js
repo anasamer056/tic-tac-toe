@@ -5,8 +5,6 @@ const screenController = (
         gameController = GameController();
 
         const boardDiv = document.querySelector("#board");
-        const gameStatusDiv = document.querySelector("#game-status");
-        console.dir(gameStatusDiv);
 
         // Create buttons at the start of the game
         createButtons(gameController.board.getBoard());    
@@ -15,7 +13,15 @@ const screenController = (
         boardDiv.addEventListener("click", boxClickHandler)
 
         function boxClickHandler (e) {
-            gameController.playRound(e.target.dataset.row, e.target.dataset.col)
+            const errorDiv = document.querySelector("#error-msg")
+            try {
+                errorDiv.textContent = ""
+                gameController.playRound(e.target.dataset.row, e.target.dataset.col)
+            } catch (e) {
+                if (e instanceof BoxAlreadyFilledError){
+                    errorDiv.textContent = e.message;
+                }
+            }
             updateDisplay();
         }
 
@@ -36,8 +42,12 @@ const screenController = (
         }
 
         function updateDisplay() { 
+            const gameStatusDiv = document.querySelector("#game-status");
             const currentBoard = gameController.board.getBoard();
+
             createButtons(currentBoard); 
+            gameStatusDiv.textContent = `${gameController.getCurrentPlayer().getName()}'s turn`
+
         }
     }
 )();
@@ -61,10 +71,12 @@ function GameController
     let currentPlayer = players[0];
 
     // getters
+    const getCurrentPlayer = () => currentPlayer;
     
     // public methods 
     const playRound = (row, col) => {
         board.markBox(row, col, currentPlayer);
+       
         switchPlayer();
     }
 
@@ -74,7 +86,7 @@ function GameController
 
     } 
 
-    return {playRound, board}
+    return {playRound, getCurrentPlayer, board}
 }
 
 function Board(){
@@ -94,7 +106,12 @@ function Board(){
 
     // public methods 
     const markBox = (row, col, player) => {
-        board[row][col] = player.getSymbol();
+        if (board[row][col] === '') {
+            board[row][col] =  player.getSymbol();
+        } else {
+            throw new BoxAlreadyFilledError("Can't overwrite a box");
+        };
+        
     }
 
     return {markBox, getBoard}
@@ -107,4 +124,11 @@ function Player(name, symbol) {
 
     return {getName, getSymbol};
     
+}
+
+class BoxAlreadyFilledError extends Error {
+    constructor(message) {
+        super(message); 
+        this.name = "BoxAlreadyFilledError";
+      }
 }
