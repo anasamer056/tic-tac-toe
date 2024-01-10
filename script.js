@@ -1,69 +1,73 @@
+const screenController = ScreenController();
+// Create buttons at the start of the game
+screenController.updateDisplay();  
 
-const screenController = (
-    function(){
-        // Dependencies 
-        gameController = GameController();
+function ScreenController() {
+    // Props
+    let playerOneName, playerTwoName, playerOneSymbol, playerTwoSymbol;
 
-        const boardDiv = document.querySelector("#board");
-
-        // Create buttons at the start of the game
-        updateDisplay();  
-       
-        // Attach event listener to track clicks on the buttons
-        boardDiv.addEventListener("click", boxClickHandler)
-
-        function boxClickHandler (e) {
-            const errorDiv = document.querySelector("#error-msg")
-            try {
-                errorDiv.textContent = ""
-                gameController.playRound(e.target.dataset.row, e.target.dataset.col)
-            } catch (e) {
-                if (e instanceof GameOverWin){
-                    errorDiv.textContent = e.winner.getName() + " won!"
-                    boardDiv.removeEventListener("click", boxClickHandler);
-                }
-                else if (e instanceof GameOverTie) {
-                    errorDiv.textContent = e.message;
-                    boardDiv.removeEventListener("click", boxClickHandler);
-                }
-                else if (e instanceof BoxAlreadyFilledError){
-                    errorDiv.textContent = e.message;
-                }
-                else {
-                    console.log(e);
-                    console.log(e.message);
-
-                }
+    // Dependencies 
+    gameController = GameController(playerOneName,playerOneSymbol, playerTwoName,playerTwoSymbol);
+    const boardDiv = document.querySelector("#board");
+    
+    // Attach event listeners to input fields 
+    updatePlayersDetails();
+    // Attach event listener to track clicks on the buttons
+    boardDiv.addEventListener("click", boxClickHandler)
+    function boxClickHandler (e) {
+        const errorDiv = document.querySelector("#error-msg")
+        try {
+            errorDiv.textContent = ""
+            gameController.playRound(e.target.dataset.row, e.target.dataset.col)
+        } catch (e) {
+            if (e instanceof GameOverWin){
+                errorDiv.textContent = e.winner.getName() + " won!"
+                boardDiv.removeEventListener("click", boxClickHandler);
             }
-            updateDisplay();
-        }
-
-
-        function createButtons(board){
-            boardDiv.innerHTML = '';
-
-            for (let row = 0; row < 3; row++) {
-                for (let col = 0; col<3; col++) {
-                    const button = document.createElement("button");
-                    button.textContent = board[row][col];
-                    button.classList.add("btn");
-                    button.dataset.row = row;
-                    button.dataset.col = col;
-                    boardDiv.appendChild(button);
-                }
+            else if (e instanceof GameOverTie) {
+                errorDiv.textContent = e.message;
+                boardDiv.removeEventListener("click", boxClickHandler);
+            }
+            else if (e instanceof BoxAlreadyFilledError){
+                errorDiv.textContent = e.message;
+            }
+            else {
+                console.log(e);
+                console.log(e.message);
             }
         }
-
-        function updateDisplay() { 
-            const gameStatusDiv = document.querySelector("#game-status");
-            const currentBoard = gameController.board.getBoard();
-
-            createButtons(currentBoard); 
-            gameStatusDiv.textContent = `${gameController.getCurrentPlayer().getName()}'s turn`
-
+        updateDisplay();
+    }
+    function createButtons(board){
+        boardDiv.innerHTML = '';
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col<3; col++) {
+                const button = document.createElement("button");
+                button.textContent = board[row][col];
+                button.classList.add("btn");
+                button.dataset.row = row;
+                button.dataset.col = col;
+                boardDiv.appendChild(button);
+            }
         }
     }
-)();
+    function updateDisplay() { 
+        const gameStatusDiv = document.querySelector("#game-status");
+        const currentBoard = gameController.board.getBoard();
+        createButtons(currentBoard); 
+        gameStatusDiv.textContent = `${gameController.getCurrentPlayer().getName()}'s turn`
+    }
+    function updatePlayersDetails() {
+        const playerOneNameDiv = document.querySelector("#player-one-name");
+        playerOneNameDiv.addEventListener("input", ()=>{
+            playerOneName = playerOneNameDiv.value;
+        })
+    }
+
+    
+    return {updateDisplay}
+    }
+
 
 function GameController
     (

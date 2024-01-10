@@ -8,7 +8,39 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="main flex-center">
+    <div class="main flex-col-center">
+        <div class="details flex-center">
+            <fieldset>
+                    <legend>Player 1</legend>
+                <div class="flex">
+                    <label for="player-one-name">
+                        Name:
+                    </label>
+                    <input type="text" id="player-one-name">
+                </div>
+                <div class="flex">
+                    <label for="player-one-symbol">
+                        Symbol:
+                    </label>
+                    <input type="text" id="player-one-symbol">
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Player 2</legend>
+                <div class="flex">
+                    <label for="player-two-name">
+                        Name:
+                    </label>
+                    <input type="text" id="player-two-name">
+                </div>
+                <div class="flex">
+                    <label for="player-two-symbol">
+                        Symbol:
+                    </label>
+                    <input type="text" id="player-two-symbol">
+                </div>
+            </fieldset>
+        </div>
         <div class="container ">
             <h3 id="game-status"></h3>
             <div id="board"></div>

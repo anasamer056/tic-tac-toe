@@ -9,8 +9,18 @@
 }
 
 /* utility */
+.flex {
+    display: flex;
+}
 .flex-center {
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-col-center {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -24,8 +34,21 @@
     text-align: center;
 }
 
-/* Board  */
+/* tags */
+label {
+    width: 70px;
+    text-align: right;
+}
 
+/* Board  */
+.main {
+    margin: 0 auto;
+}
+
+.details {
+    width: min-content;
+    gap: 24px;
+}
 #board {
     width: var(--board-witdth);
 }
