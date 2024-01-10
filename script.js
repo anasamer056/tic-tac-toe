@@ -155,7 +155,12 @@ function Board(){
 
     const getWinStatus = (row, col) => {
         // Store the return value of all checks in a list 
-        const checkList = [getRowWinStatus(row), getColWinStatus(col)]
+        const checkList = [
+            getRowWinStatus(row), 
+            getColWinStatus(col), 
+            getFirstDiagonalWinStatus(),
+            getSecondDiagonalWinStatus()
+        ]
         // Iterate over the list, looking for the first true winStatus
         for (result of checkList) {
             if (result.winStatus) return result;
@@ -184,6 +189,34 @@ function Board(){
         if (firstToken === "") return noWinnerYet;
         for (let row = 1; row < 3; row++){
             const nextToken = board[row][col];
+            if (nextToken !== firstToken)  return noWinnerYet;
+        }
+        
+        return {winStatus: true, winnerToken: firstToken};
+    }
+
+    const getFirstDiagonalWinStatus = () => {
+        // Upper left to lower right diagonal
+        
+        let firstToken = board[0][0];
+
+        if (firstToken === "") return noWinnerYet;
+        for (let i = 1; i < 3; i++){
+            const nextToken = board[i][i];
+            if (nextToken !== firstToken)  return noWinnerYet;
+        }
+        
+        return {winStatus: true, winnerToken: firstToken};
+    }
+
+    const getSecondDiagonalWinStatus = () => {
+        // Upper right to lower left diagonal
+        
+        let firstToken = board[0][2];
+
+        if (firstToken === "") return noWinnerYet;
+        for (let i = 1; i < 3; i++){
+            const nextToken = board[i][2-i];
             if (nextToken !== firstToken)  return noWinnerYet;
         }
         
