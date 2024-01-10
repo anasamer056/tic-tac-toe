@@ -18,7 +18,11 @@ const screenController = (
                 errorDiv.textContent = ""
                 gameController.playRound(e.target.dataset.row, e.target.dataset.col)
             } catch (e) {
-                if (e instanceof GameOverTie) {
+                if (e instanceof GameOverWin){
+                    errorDiv.textContent = e.winner.getName() + " won!"
+                    boardDiv.removeEventListener("click", boxClickHandler);
+                }
+                else if (e instanceof GameOverTie) {
                     errorDiv.textContent = e.message;
                     boardDiv.removeEventListener("click", boxClickHandler);
                 }
@@ -80,7 +84,11 @@ function GameController
     // public methods 
     const playRound = (row, col) => {
         board.markBox(row, col, currentPlayer);
-        if (board.getTieStatus()) {
+        if (board.getWinStatus().winStatus) {
+            const winner = board.getWinStatus().winnerToken
+            throw new GameOverWin(getWinnerByToken(winner))
+        }
+        else if (board.getTieStatus()) {
             throw new GameOverTie("Game over. You tied.")
         } else {
             switchPlayer();
@@ -94,6 +102,14 @@ function GameController
         currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
 
     } 
+
+    const getWinnerByToken = (token) => {
+        for (let i = 0; i<players.length; i++) {
+            if (players[i].getSymbol() === token) {
+                return players[i];
+            }
+        }
+    }
 
     return {playRound, getCurrentPlayer, board}
 }
@@ -122,7 +138,6 @@ function Board(){
         }; 
     }
 
-    // private methods
     const getTieStatus = () => {
         for (let row = 0; row < 3; row++){
             for (let col = 0; col < 3; col++){
@@ -131,7 +146,26 @@ function Board(){
         }
         return true;
     }
-    return {markBox, getBoard, getTieStatus}
+
+    const getWinStatus = () => {
+        return getRowWinStatus();
+    }
+
+    // private methods
+    const getRowWinStatus = () => {
+        rowLoop: for (let row = 0; row < 3; row++){
+            const firstToken = board[row][0];
+            if (firstToken === "") continue;
+            for (let col = 1; col < 3; col++){
+                const nextToken = board[row][col];
+                if (nextToken !== firstToken) continue rowLoop;
+            }
+            return {winStatus: true, winnerToken: firstToken};
+        }
+        return {winStatus: false, winnerToken: null}
+    }
+
+    return {markBox, getBoard, getTieStatus, getWinStatus}
 }
 
 function Player(name, symbol) {    
@@ -156,3 +190,12 @@ class GameOverTie extends Error {
         this.name = "GameOverTie"
     }
 }
+
+class GameOverWin extends Error {
+    constructor(winner) {
+        super("GameOverWin"); 
+        this.name = "GameOverWin"
+        this.winner = winner;
+    }
+}
+
