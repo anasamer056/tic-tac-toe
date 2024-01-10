@@ -2,6 +2,12 @@
     --board-witdth: 250px;
 }
 
+/* reset */
+* {
+    padding: 0;
+    margin: 0;
+}
+
 /* utility */
 .flex-center {
     display: flex;
@@ -11,6 +17,8 @@
 .btn {
     width: calc(var(--board-witdth)/3);
     height: calc(var(--board-witdth)/3);
+    font-size: 20px;
+    vertical-align: middle;
 }
 .container {
     text-align: center;
