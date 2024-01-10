@@ -122,6 +122,7 @@ function GameController
 function Board(){
     // props 
     const board = [];
+    const noWinnerYet = {winStatus: false, winnerToken: null}
 
     // getters 
     const getBoard = () => board;
@@ -153,12 +154,19 @@ function Board(){
     }
 
     const getWinStatus = (row, col) => {
-        return getRowWinStatus(row);
+        // Store the return value of all checks in a list 
+        const checkList = [getRowWinStatus(row), getColWinStatus(col)]
+        // Iterate over the list, looking for the first true winStatus
+        for (result of checkList) {
+            if (result.winStatus) return result;
+        }
+        // If none was found, return the last result, which equals noWinnerYet
+        // const noWinnerYet = {winStatus: false, winnerToken: null}
+        return checkList[checkList.length-1]
     }
 
     // private methods
     const getRowWinStatus = (row) => {
-        const noWinnerYet = {winStatus: false, winnerToken: null}
         const firstToken = board[row][0];
 
         if (firstToken === "") return noWinnerYet;
@@ -168,7 +176,18 @@ function Board(){
         }
         
         return {winStatus: true, winnerToken: firstToken};
+    }
 
+    const getColWinStatus = (col) => {
+        const firstToken = board[0][col];
+
+        if (firstToken === "") return noWinnerYet;
+        for (let row = 1; row < 3; row++){
+            const nextToken = board[row][col];
+            if (nextToken !== firstToken)  return noWinnerYet;
+        }
+        
+        return {winStatus: true, winnerToken: firstToken};
     }
 
     return {markBox, getBoard, getTieStatus, getWinStatus}
