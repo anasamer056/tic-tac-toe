@@ -1,6 +1,12 @@
-const screenController = ScreenController();
+var screenController = ScreenController();
 // Create buttons at the start of the game
 screenController.updateDisplay();  
+
+const resetBtn = document.querySelector("#reset-btn");
+resetBtn.addEventListener("click", ()=>{
+g    screenController = ScreenController();
+    screenController.updateDisplay(); 
+});
 
 function ScreenController() {
     // Props
@@ -8,8 +14,8 @@ function ScreenController() {
 
     // Dependencies 
     gameController = GameController(playerOneName,playerOneSymbol, playerTwoName,playerTwoSymbol);
+    // Selectors
     const boardDiv = document.querySelector("#board");
-    
     // Attach event listeners to input fields 
     updatePlayersDetails();
     // Attach event listener to track clicks on the buttons
@@ -65,7 +71,11 @@ function ScreenController() {
     }
 
     
-    return {updateDisplay}
+
+    function detachAllListeners() {
+        boardDiv.removeEventListener("click", boxClickHandler)
+    }
+    return {updateDisplay, detachAllListeners}
     }
 
 
@@ -141,6 +151,7 @@ function Board(){
 
     // public methods 
     const markBox = (row, col, player) => {
+        console.log(board);
         if (board[row][col] === '') {
             board[row][col] =  player.getSymbol();
         } else {
