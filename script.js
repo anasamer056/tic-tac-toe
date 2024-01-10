@@ -29,6 +29,11 @@ const screenController = (
                 else if (e instanceof BoxAlreadyFilledError){
                     errorDiv.textContent = e.message;
                 }
+                else {
+                    console.log(e);
+                    console.log(e.message);
+
+                }
             }
             updateDisplay();
         }
@@ -84,8 +89,8 @@ function GameController
     // public methods 
     const playRound = (row, col) => {
         board.markBox(row, col, currentPlayer);
-        if (board.getWinStatus().winStatus) {
-            const winner = board.getWinStatus().winnerToken
+        if (board.getWinStatus(row, col).winStatus) {
+            const winner = board.getWinStatus(row, col).winnerToken
             throw new GameOverWin(getWinnerByToken(winner))
         }
         else if (board.getTieStatus()) {
@@ -147,22 +152,23 @@ function Board(){
         return true;
     }
 
-    const getWinStatus = () => {
-        return getRowWinStatus();
+    const getWinStatus = (row, col) => {
+        return getRowWinStatus(row);
     }
 
     // private methods
-    const getRowWinStatus = () => {
-        rowLoop: for (let row = 0; row < 3; row++){
-            const firstToken = board[row][0];
-            if (firstToken === "") continue;
-            for (let col = 1; col < 3; col++){
-                const nextToken = board[row][col];
-                if (nextToken !== firstToken) continue rowLoop;
-            }
-            return {winStatus: true, winnerToken: firstToken};
+    const getRowWinStatus = (row) => {
+        const noWinnerYet = {winStatus: false, winnerToken: null}
+        const firstToken = board[row][0];
+
+        if (firstToken === "") return noWinnerYet;
+        for (let col = 1; col < 3; col++){
+            const nextToken = board[row][col];
+            if (nextToken !== firstToken)  return noWinnerYet;
         }
-        return {winStatus: false, winnerToken: null}
+        
+        return {winStatus: true, winnerToken: firstToken};
+
     }
 
     return {markBox, getBoard, getTieStatus, getWinStatus}
