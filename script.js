@@ -1,25 +1,47 @@
-var screenController = ScreenController();
-// Create buttons at the start of the game
-screenController.updateDisplay();  
+const app = CreateApp()
+function CreateApp() {
+    let dataList;
 
-const resetBtn = document.querySelector("#reset-btn");
-resetBtn.addEventListener("click", ()=>{
+    let screenController; 
     
-    screenController.detachAllListeners();
-    screenController = ScreenController();
-    screenController.updateDisplay(); 
-});
+    const namesForm = document.querySelector("#names-form")
+    namesForm.addEventListener("submit", (e)=>{
+        e.preventDefault();
+        if (screenController) {
+            screenController.detachAllListeners();
+        }
+        const formData = new FormData(namesForm);
+        dataList = [
+            formData.get("player-one-name") || undefined,
+            formData.get("player-one-symbol") || undefined,
+            formData.get("player-two-name") || undefined,
+            formData.get("player-two-symbol") || undefined,
+        ]
 
-function ScreenController() {
+        console.dir(dataList)
+        screenController = ScreenController(dataList);
+        // Create buttons at the start of the game
+        screenController.updateDisplay();  
+    })
+  
+
+    const resetBtn = document.querySelector("#reset-btn");
+    resetBtn.addEventListener("click", ()=>{
+        screenController.detachAllListeners();
+        screenController = ScreenController(dataList);
+        screenController.updateDisplay(); 
+    });
+    
+}
+
+
+function ScreenController(namesAndSymbols) {
     // Props
-    let playerOneName, playerTwoName, playerOneSymbol, playerTwoSymbol;
 
     // Dependencies 
-    gameController = GameController(playerOneName,playerOneSymbol, playerTwoName,playerTwoSymbol);
+    gameController = GameController(...namesAndSymbols);
     // Selectors
     const boardDiv = document.querySelector("#board");
-    // Attach event listeners to input fields 
-    updatePlayersDetails();
     // Attach event listener to track clicks on the buttons
     boardDiv.addEventListener("click", boxClickHandler)
     function boxClickHandler (e) {
@@ -65,30 +87,22 @@ function ScreenController() {
         createButtons(currentBoard); 
         gameStatusDiv.textContent = `${gameController.getCurrentPlayer().getName()}'s turn`
     }
-    function updatePlayersDetails() {
-        const playerOneNameDiv = document.querySelector("#player-one-name");
-        playerOneNameDiv.addEventListener("input", ()=>{
-            playerOneName = playerOneNameDiv.value;
-        })
-    }
-
-    
+  
 
     function detachAllListeners() {
         boardDiv.removeEventListener("click", boxClickHandler)
     }
+    
     return {updateDisplay, detachAllListeners}
     }
 
 
-function GameController
-    (
-        playerOneName = "Player 1", 
-        playerOneSymbol = "X", 
-        playerTwoName = "Player 2",
-        playerTwoSymbol = "O"
+function GameController (
+    playerOneName = "Player 1", 
+    playerOneSymbol = "X", 
+    playerTwoName = "Player 2", 
+    playerTwoSymbol = "O"
     ){
-
     // dependencies
     board = Board();
     
