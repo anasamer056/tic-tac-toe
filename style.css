@@ -23,6 +23,9 @@
 .gap-10{
     gap: 20px;
 }
+.gap-5{
+    gap: 5px;
+}
 
 .flex-col-center {
     display: flex;
@@ -57,7 +60,6 @@ input {
 
 .details {
     width: min-content;
-    gap: 24px;
 }
 #board {
     width: var(--board-witdth);
@@ -67,11 +69,11 @@ input {
 .details-container {
     width: 100%;
     background-color: rgb(239, 239, 239);
-    padding: 20px;
+    padding: 10px;
 }
 
 #game {
-    padding: 20px;
+    padding: 10px;
 }
 
 .hidden {
