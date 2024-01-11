@@ -17,6 +17,12 @@
     justify-content: center;
     align-items: center;
 }
+.gap-20{
+    gap: 20px;
+}
+.gap-10{
+    gap: 20px;
+}
 
 .flex-col-center {
     display: flex;
@@ -55,6 +61,7 @@ input {
 }
 #board {
     width: var(--board-witdth);
+    margin: 10px 0;
 }
 
 .details-container {
@@ -65,4 +72,8 @@ input {
 
 #game {
     padding: 20px;
+}
+
+.hidden {
+    visibility: hidden;
 }

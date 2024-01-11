@@ -1,4 +1,5 @@
 const app = CreateApp()
+
 function CreateApp() {
     let dataList;
 
@@ -22,6 +23,7 @@ function CreateApp() {
         screenController = ScreenController(dataList);
         // Create buttons at the start of the game
         screenController.updateDisplay();  
+        document.querySelector("#game").classList.remove("hidden");
     })
   
 
