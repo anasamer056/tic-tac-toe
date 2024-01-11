@@ -39,6 +39,10 @@ label {
     width: 70px;
     text-align: right;
 }
+input { 
+    background-color: transparent;
+    border: 1px solid gray;
+}
 
 /* Board  */
 .main {
@@ -53,3 +57,12 @@ label {
     width: var(--board-witdth);
 }
 
+.details-container {
+    width: 100%;
+    background-color: rgb(239, 239, 239);
+    padding: 20px;
+}
+
+#game {
+    padding: 20px;
+}

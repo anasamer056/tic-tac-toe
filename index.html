@@ -9,37 +9,42 @@
 </head>
 <body>
     <div class="main flex-col-center">
-        <div class="details flex-center">
-            <fieldset>
-                    <legend>Player 1</legend>
-                <div class="flex">
-                    <label for="player-one-name">
-                        Name:
-                    </label>
-                    <input type="text" id="player-one-name">
+        <div class="details-container flex-center" >
+            <form class="details flex-col-center">
+                <div class="flex-center">
+                    <fieldset>
+                            <legend>Player 1</legend>
+                        <div class="flex">
+                            <label for="player-one-name">
+                                Name:
+                            </label>
+                            <input type="text" id="player-one-name">
+                        </div>
+                        <div class="flex">
+                            <label for="player-one-symbol">
+                                Symbol:
+                            </label>
+                            <input type="text" id="player-one-symbol">
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Player 2</legend>
+                        <div class="flex">
+                            <label for="player-two-name">
+                                Name:
+                            </label>
+                            <input type="text" id="player-two-name">
+                        </div>
+                        <div class="flex">
+                            <label for="player-two-symbol">
+                                Symbol:
+                            </label>
+                            <input type="text" id="player-two-symbol">
+                        </div>
+                    </fieldset>
                 </div>
-                <div class="flex">
-                    <label for="player-one-symbol">
-                        Symbol:
-                    </label>
-                    <input type="text" id="player-one-symbol">
-                </div>
-            </fieldset>
-            <fieldset>
-                <legend>Player 2</legend>
-                <div class="flex">
-                    <label for="player-two-name">
-                        Name:
-                    </label>
-                    <input type="text" id="player-two-name">
-                </div>
-                <div class="flex">
-                    <label for="player-two-symbol">
-                        Symbol:
-                    </label>
-                    <input type="text" id="player-two-symbol">
-                </div>
-            </fieldset>
+                <button type="submit">Start</button>
+            </form>
         </div>
         <div id="game" class="container ">
             <h3 id="game-status"></h3>

@@ -4,7 +4,9 @@ screenController.updateDisplay();
 
 const resetBtn = document.querySelector("#reset-btn");
 resetBtn.addEventListener("click", ()=>{
-g    screenController = ScreenController();
+    
+    screenController.detachAllListeners();
+    screenController = ScreenController();
     screenController.updateDisplay(); 
 });
 
